@@ -3,6 +3,7 @@
 #include<ctype.h>
 #include<string.h>
 
+
 #define OUTPUTFILE "../resources/plot.txt"
 #define COMMENT '#'
 #define NEWLINE '\n'
