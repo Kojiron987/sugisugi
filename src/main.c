@@ -36,7 +36,7 @@ void getPgmToken(void);
 void getToken(char c);
 void cleanToken(void);
 void printPgmToken(void);
-void putEdgedPgm(int height, Color[][height]);
+void putEdgedPgm(int height, int Color[][height]);
 
 
 
@@ -63,16 +63,21 @@ int main(int argc, char* argv[])
   int orgColor[pgm.width][pgm.height];  // 処理した後のデータを書き込む配列
   int edgedColor[pgm.width][pgm.height];
 
+
+
   for(int width = 0; width < pgm.width; width++)                  // 画素の読み取りを行う
     for(int height = 0; height < pgm.height; height++)
     {
-        color =  fgetc(fp);
-        orgColor[width][height] = color;
+        color = fgetc(fp);
+        orgColor[width][height] = (int)color;
+        edgedColor[width][height] = (int)color;
     }
   fclose(fp);
 
+
+
   weighted_avarage(pgm.width, pgm.height, orgColor, edgedColor);
-  putEdgedPgm(pgm.height, orgColor);
+  putEdgedPgm(pgm.height, edgedColor);
 
 
   return 0;
@@ -186,7 +191,7 @@ void printPgmToken()            // デバグ用　pgmファイルの要素を出
 }
 
 
-void putEdgedPgm(int height, Color[][height])
+void putEdgedPgm(int height, int Color[][height])
 {
   FILE* wfp;
   wfp = fopen(EDGEFILE, "wb");
@@ -203,7 +208,7 @@ void putEdgedPgm(int height, Color[][height])
   for(int width = 0; width < pgm.width; width++)                  // 画素の読み取りを行う
     for(int height = 0; height < pgm.height; height++)
     {
-        fprintf(wfp, "%c", Color[width][height]);
+        fprintf(wfp, "%c", (char)Color[width][height]);
     }
 
     fclose(wfp);

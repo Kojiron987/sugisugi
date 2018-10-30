@@ -6,6 +6,6 @@
 
 
 
-void weighted_avarage(int width, height, orgColor[][height], colors[][height]);
+void weighted_avarage(int width, int height, int orgColor[][height], int colors[][height]);
 
 #endif
