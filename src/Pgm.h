@@ -7,7 +7,7 @@
 class Pgm
 {
 public:
-	Pgm(std::string inputFile);
+	Pgm(const char*  inputFile);
 	~Pgm();
 
 	int getWidth(void);
