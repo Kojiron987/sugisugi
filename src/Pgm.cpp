@@ -5,6 +5,7 @@
 
 Pgm::Pgm(const char* inputFile)
 {
+	this->colorArray = nullptr;
 	this->inputFile = std::string(inputFile);
 	this->isSuccessedOpen = false;
 	this->setPgm(void);
@@ -14,7 +15,9 @@ Pgm::Pgm(const char* inputFile)
 
 Pgm::~Pgm()
 {
-	delete this->colorArray;
+	if(this->colorArray != nullptr) { // new していれば消す
+		delete this->colorArray;
+	}
 }
 
 
@@ -28,10 +31,42 @@ void Pgm::setPgm()
 	else
 		this->fileOpenFlag = true;
 
-	unsigned char data;
-	while(!inFile.get(data)) {
-		if(this->isComment(data)) {
-			this->skipComment(&inFile);
+
+	char cData;	// charでファイルを読む
+	int iData;	// intでファイルを読む
+
+	while(!inFile.get(cData)) {
+		if(this->isComment(cData)) {
+			this->skipComment(inFile);
 		}
+
 	}
+
+
+
+	for(int i = 0; i < this->width; i++)
+		for(int j = 0; j < this->height; j++) {
+			if(inFile.eof()) {  // 途中でファイルの終端までいった場合
+				this->fileOpenFlag = false;  // 読み込みを失敗にしてコンストラクタを抜ける
+				return;
+			}
+
+		}
+}
+
+
+int Pgm::getWidth()
+{
+	return this->width;
+}
+
+
+int Pgm::getHeight()
+{
+	return this->height;
+}
+
+int Pgm::getColorSize()
+{
+	return this->colorSize;
 }

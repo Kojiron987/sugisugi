@@ -69,8 +69,8 @@ int main(int argc, char* argv[])
     for(int height = 0; height < pgm.height; height++)
     {
         color = fgetc(fp);
-        orgColor[width][height] = (int)color;
-        edgedColor[width][height] = (int)color;
+        orgColor[width][height] = color;
+        edgedColor[width][height] = color;
     }
   fclose(fp);
 
