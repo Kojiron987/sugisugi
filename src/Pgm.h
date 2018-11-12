@@ -7,7 +7,7 @@
 class Pgm
 {
 public:
-	Pgm(const char* inputFile);
+	Pgm(const char *inputFile);
 	~Pgm();
 
 	int getWidth(void);
@@ -17,11 +17,13 @@ public:
 	void printPgmToken(void);
 
 
+
 private:
 
 	void skipComment(const std::ifstream inFile);
 	void setPgm(void);
-	
+	void isComment(unsigned char c);
+
 	std::string inputFile;
 	std::string magic;
 	int width;

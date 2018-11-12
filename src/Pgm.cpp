@@ -19,8 +19,19 @@ Pgm::~Pgm()
 
 
 
-Pgm::setPgm()
+void Pgm::setPgm()
 {
-	std::ifstream inFile(this->inputFile, 
-}
+	std::ifstream inFile(this->inputFile, ios::in | ios::binary);
 
+	if(!inFile.is_open())
+		return;
+	else
+		this->fileOpenFlag = true;
+
+	unsigned char data;
+	while(!inFile.get(data)) {
+		if(this->isComment(data)) {
+			this->skipComment(&inFile);
+		}
+	}
+}
