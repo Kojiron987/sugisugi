@@ -7,12 +7,13 @@
 class Pgm
 {
 public:
-	Pgm(std::string inputFile);
+	Pgm(const char* inputFile);
 	~Pgm();
 
 	int getWidth(void);
 	int getHeight(void);
 	int getColorSize(void);
+	bool isSucceedOpen(void);
 	void printPgmToken(void);
 
 
@@ -27,5 +28,6 @@ private:
 	int height;
 	int colorSize;
 	int *colorArray;
+	bool fileOpenFlag;
 
 };
