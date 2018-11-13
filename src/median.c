@@ -34,41 +34,53 @@ int test[][3] = {
 
 void weighted_avarage(int width, int height, const int *orgColor, int *edgedColor)
 {
+
+  int temp = 0;
+
   for(int i = 1; i < (width - 1); i++)
-    for(int j = 1; j < (height -1); j++)
+    for(int j = 1; j < (height -1); j++) {
+      temp = 0;
       for(int i1=-1;i1<=1;i1++){
         for(int j1=-1;j1<=1;j1++){
-            edgedColor[i * height + j] = nine[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
-          }
+            temp += nine[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
         }
+      }
+      edgedColor[i * height + j] = temp;
+    }
 }
 
 void weighted_avarage_ver2(int width, int height, const int *orgColor, int *edgedColor)
 {
   for(int i = 1; i < (width - 1); i++)
-    for(int j = 1; j < (height -1); j++)
+    for(int j = 1; j < (height -1); j++) {
+      temp = 0;
       for(int i1=-1;i1<=1;i1++){
         for(int j1=-1;j1<=1;j1++){
-            edgedColor[i * height + j] = sixteen[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
-          }
+            temp += sixteen[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
         }
+      }
+        temp /= 16;
+        edgedColor[i * height + j] = temp;
+    }
 }
 
 
 void golay_filter(int colorSize, int width, int height, const int *orgColor, int *edgedColor)
 {
-  int tmp = 0;
+  int temp = 0;
   for(int i = 2; i < (width - 2); i++)
-    for(int j = 2; j < (height - 2); j++)
-      for(int i1=-1;i1<=1;i1++){
-        for(int j1=-1;j1<=1;j1++){
-            tmp = Golay[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
-            if(tmp < 0)
-              edgedColor[i * height + j] = 0;
-            else if(tmp > colorSize)
-              edgedColor[i * height + j] = 255;
-            else
-              edgedColor[i * height + j] = tmp;
-          }
+    for(int j = 2; j < (height - 2); j++) {
+      for(int i1=-1;i1<=1;i1++) {
+        for(int j1=-1;j1<=1;j1++) {
+            temp += Golay[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
         }
+      }
+      temp /= 175;
+      if(temp < 0)
+        edgedColor[i * height + j] = 0;
+      else if(temp > colorSize)
+        edgedColor[i * height + j] = colorSize;
+      else
+        edgedColor[i * height + j] = temp;
+    }
 }
