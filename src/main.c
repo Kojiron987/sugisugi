@@ -1,33 +1,20 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<ctype.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 #include "median.h"
 
 #define EDGEFILE "../resources/edgefile.pgm"
 #define OUTPUTFILE "../resources/plot.txt"
 #define COMMENT '#'
 #define NEWLINE '\n'
-#define SPACE ' '
-#define TAB '\t'
 
-#define MAGIC 0
-#define WIDTH 1
-#define HEIGHT 2
-#define COLOR 3
-
-
-
-
-
-
-
-
-
-
-
-
-
+enum PGMState{
+  MAGIC = 0,
+  WIDTH,
+  HEIGHT,
+  COLOR
+};
 
 
 
@@ -50,16 +37,18 @@ void getPgmToken(void);
 void getToken(char c);
 void cleanToken(void);
 void printPgmToken(void);
-void putEdgedPgm(int theight, int *Color);
+void putEdgedPgm(int *Color);
 
 
 
 int main(int argc, char* argv[])
 {
   char c;
-  unsigned char uc;
-  cleanToken();
   int color;
+  int *orgColor, *edgedColor;
+
+  cleanToken();
+  
 
   if((fp = fopen(argv[1], "rb")) == NULL)          // 読み取るファイルを引数から取り、開く
   {
@@ -77,19 +66,19 @@ int main(int argc, char* argv[])
   //int orgColor[pgm.width * pgm.height];  // 処理した後のデータを書き込む配列
   //int edgedColor[pgm.width * pgm.height];
 
-  int *orgColor, *edgedColor;
+
   orgColor = malloc(sizeof(int) * pgm.width * pgm.height);
   edgedColor = malloc(sizeof(int) * pgm.width * pgm.height);
 
 
 
 
-  for(int width = 0; width < pgm.width; width++)                  // 画素の読み取りを行う
-    for(int height = 0; height < pgm.height; height++)
+  for(int height = 0; height < pgm.height; height++)                  // 画素の読み取りを行う
+    for(int width = 0; width < pgm.width; width++)
     {
         color = fgetc(fp);
-        orgColor[width * pgm.height + height] = color;
-        edgedColor[width * pgm.height + height] = color;
+        orgColor[height * pgm.width + width] = color;
+        edgedColor[height * pgm.width + width] = color;
     }
   fclose(fp);
 
@@ -97,13 +86,13 @@ int main(int argc, char* argv[])
 
 //  weighted_avarage(pgm.width, pgm.height, orgColor, edgedColor);
 //  weighted_avarage_ver2(pgm.width, pgm.height, orgColor, edgedColor);
-  golay_filter(pgm.colorSize, pgm.width, pgm.height, orgColor, edgedColor);
+//  golay_filter(pgm.colorSize, pgm.width, pgm.height, orgColor, edgedColor);
+  median_filter(pgm.width, pgm.height, orgColor, edgedColor);
 
 
 
 
-
-  putEdgedPgm(pgm.height, edgedColor);
+  putEdgedPgm(edgedColor);
 
   free(orgColor);
   free(edgedColor);
@@ -151,17 +140,13 @@ void getPgmToken()         // pgm構造体に要素を格納
   int flag = MAGIC;
   while((c = fgetc(fp)) != EOF)
   {
-    switch (c) {             // コメントは飛ばす
-    case COMMENT:
+    if(c == COMMENT) {      // コメントは飛ばす
       skipComment();
-      break;
-
-    case NEWLINE:           // 空白等は飛ばす
-    case TAB:
-    case SPACE:
-      break;
-
-    default:                // 空白文字でもコメントでもない場合、pgmファイルの要素が正しく
+    }
+    else if(isspace(c)) {
+      continue;
+    }
+    else {}  // 空白文字でもコメントでもない場合、pgmファイルの要素が正しく
       switch (flag) {       // 入力ファイルにあるとして、要素を取り出す
       case MAGIC:           // magic word(P1, P2, P3, P4, P5, P6)の読み取り
         getToken(c);
@@ -189,8 +174,6 @@ void getPgmToken()         // pgm構造体に要素を格納
       default:
         break;
       }
-      break;
-    }
   }
 
 }
@@ -218,7 +201,7 @@ void printPgmToken()            // デバグ用　pgmファイルの要素を出
 }
 
 
-void putEdgedPgm(int theight, int *Color)
+void putEdgedPgm(int *Color)
 {
   FILE* wfp;
   wfp = fopen(EDGEFILE, "wb");
@@ -232,10 +215,10 @@ void putEdgedPgm(int theight, int *Color)
   fprintf(wfp, "%d\n", pgm.width);
   fprintf(wfp, "%d\n", pgm.height);
   fprintf(wfp, "%d\n", pgm.colorSize);
-  for(int width = 0; width < pgm.width; width++)                  // 画素の読み取りを行う
-    for(int height = 0; height < pgm.height; height++)
+  for(int height = 0; height < pgm.height; height++)                  // 画素の読み取りを行う
+    for(int width = 0; width < pgm.width; width++)
     {
-        fprintf(wfp, "%c", (char)Color[width * pgm.height + height]);
+        fprintf(wfp, "%c", (char)Color[height * pgm.width + width]);
     }
 
     fclose(wfp);
