@@ -17,6 +17,20 @@
 #define COLOR 3
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct pgm_t        // cotain pgm attribute
 {
   char magic[5];
@@ -36,7 +50,7 @@ void getPgmToken(void);
 void getToken(char c);
 void cleanToken(void);
 void printPgmToken(void);
-void putEdgedPgm(int height, int Color[][height]);
+void putEdgedPgm(int theight, int *Color);
 
 
 
@@ -60,8 +74,13 @@ int main(int argc, char* argv[])
 //  while((c = fgetc(fp)) != EOF && c != NEWLINE)    // 画素のところまで空白等をとばす
 //                    ;
 
-  int orgColor[pgm.width][pgm.height];  // 処理した後のデータを書き込む配列
-  int edgedColor[pgm.width][pgm.height];
+  //int orgColor[pgm.width * pgm.height];  // 処理した後のデータを書き込む配列
+  //int edgedColor[pgm.width * pgm.height];
+
+  int *orgColor, *edgedColor;
+  orgColor = malloc(sizeof(int) * pgm.width * pgm.height);
+  edgedColor = malloc(sizeof(int) * pgm.width * pgm.height);
+
 
 
 
@@ -69,17 +88,25 @@ int main(int argc, char* argv[])
     for(int height = 0; height < pgm.height; height++)
     {
         color = fgetc(fp);
-        orgColor[width][height] = color;
-        edgedColor[width][height] = color;
+        orgColor[width * pgm.height + height] = color;
+        edgedColor[width * pgm.height + height] = color;
     }
   fclose(fp);
 
 
 
-  weighted_avarage(pgm.width, pgm.height, orgColor, edgedColor);
+//  weighted_avarage(pgm.width, pgm.height, orgColor, edgedColor);
+//  weighted_avarage_ver2(pgm.width, pgm.height, orgColor, edgedColor);
+  golay_filter(pgm.colorSize, pgm.width, pgm.height, orgColor, edgedColor);
+
+
+
+
+
   putEdgedPgm(pgm.height, edgedColor);
 
-
+  free(orgColor);
+  free(edgedColor);
   return 0;
 
 }
@@ -191,7 +218,7 @@ void printPgmToken()            // デバグ用　pgmファイルの要素を出
 }
 
 
-void putEdgedPgm(int height, int Color[][height])
+void putEdgedPgm(int theight, int *Color)
 {
   FILE* wfp;
   wfp = fopen(EDGEFILE, "wb");
@@ -208,7 +235,7 @@ void putEdgedPgm(int height, int Color[][height])
   for(int width = 0; width < pgm.width; width++)                  // 画素の読み取りを行う
     for(int height = 0; height < pgm.height; height++)
     {
-        fprintf(wfp, "%c", (char)Color[width][height]);
+        fprintf(wfp, "%c", (char)Color[width * pgm.height + height]);
     }
 
     fclose(wfp);

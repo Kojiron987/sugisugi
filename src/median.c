@@ -1,5 +1,4 @@
 #include "median.h"
-#include <stdio.h>
 
 
 
@@ -32,28 +31,44 @@ int test[][3] = {
 
 
 
-void weighted_avarage(int width, int height, int orgColor[][height], int color[][height])
+
+void weighted_avarage(int width, int height, const int *orgColor, int *edgedColor)
 {
-
-  /*int count = 0;
-  for(int i = 0; i < 5 ;i++)
-    for(int j= 0; j < 5; j++)
-      count += Golay[i][j];
-  printf("aaa = %d\n", count);*/
   for(int i = 1; i < (width - 1); i++)
-    for(int j = 1; j < (height -1); j++)     // ←お前だ！！(ノイズの原因)
-    {
-      color[i][j] = (int)((
-        orgColor[i-1][j-1] * test[0][0] + orgColor[i-1][j] * test[1][0] + orgColor[i-1][j+1] * test[2][0]
-      + orgColor[i][j-1]   * test[0][1] + orgColor[i][j]   * test[1][1] + orgColor[i][j+1]   * test[2][1]
-      + orgColor[i+1][j-1] * test[0][2] + orgColor[i+1][j] * test[1][2] + orgColor[i+1][j+1] * test[2][2]) / 1);
+    for(int j = 1; j < (height -1); j++)
+      for(int i1=-1;i1<=1;i1++){
+        for(int j1=-1;j1<=1;j1++){
+            edgedColor[i * height + j] = nine[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
+          }
+        }
+}
 
-      /*
-      color[i][j] =(int)
-      ((orgColor[i-1][j-1] + orgColor[i][j-1] + orgColor[i+1][j-1]
-      + orgColor[i-1][j]   + orgColor[i][j]   + orgColor[i+1][j]
-      + orgColor[i-1][j+1] + orgColor[i][j+1] + orgColor[i+1][j+1]) / 9);
-      */
-      //printf("%d\n", j);
-    }
+void weighted_avarage_ver2(int width, int height, const int *orgColor, int *edgedColor)
+{
+  for(int i = 1; i < (width - 1); i++)
+    for(int j = 1; j < (height -1); j++)
+      for(int i1=-1;i1<=1;i1++){
+        for(int j1=-1;j1<=1;j1++){
+            edgedColor[i * height + j] = sixteen[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
+          }
+        }
+}
+
+
+void golay_filter(int colorSize, int width, int height, const int *orgColor, int *edgedColor)
+{
+  int tmp = 0;
+  for(int i = 2; i < (width - 2); i++)
+    for(int j = 2; j < (height - 2); j++)
+      for(int i1=-1;i1<=1;i1++){
+        for(int j1=-1;j1<=1;j1++){
+            tmp = Golay[i1+1][j1+1]*orgColor[(i+i1) * height + (j+j1)];
+            if(tmp < 0)
+              edgedColor[i * height + j] = 0;
+            else if(tmp > colorSize)
+              edgedColor[i * height + j] = 255;
+            else
+              edgedColor[i * height + j] = tmp;
+          }
+        }
 }
