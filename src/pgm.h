@@ -31,7 +31,7 @@ char token[TOKEN_SIZE];    // 大きさは適当
 
 
 
-void getPgmToken(const char* inFile, PGM_T* pgm, int* orgColor);
+void getPgmToken(const char* inFile, PGM_T* pgm);
 void skipComment(void);
 void getToken(char c);
 void cleanToken(void);

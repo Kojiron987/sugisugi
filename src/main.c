@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
   const char* outFile = "./resources/edgefile.pgm";
 
-  getPgmToken(argv[1], &pgm, edgedColor);   // PGM_T構造体にpgmファイルの要素を格納
+  getPgmToken(argv[1], &pgm);   // PGM_T構造体にpgmファイルの要素を格納
   printPgmToken(&pgm);    //デバグ用
 
   edgedColor = malloc(sizeof(int) * pgm.width * pgm.height);

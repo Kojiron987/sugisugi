@@ -1,7 +1,7 @@
 #include "pgm.h"
 
 
-void getPgmToken(const char* inFile, PGM_T *pgm, int* orgColor)         // pgm構造体に要素を格納
+void getPgmToken(const char* inFile, PGM_T *pgm)         // pgm構造体に要素を格納
 {
   char c;
   int flag = MAGIC;
