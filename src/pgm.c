@@ -115,7 +115,7 @@ void putEdgedPgm(const char* outFile, int *Color, const PGM_T* pgm)
 
   if(wfp == NULL)
   {
-    perror("could not open aa file");
+    perror(":In putEdgedPgm function:  could not open the file");
     exit(1);
   }
   fprintf(wfp, "%s\n", pgm->magic);
@@ -125,10 +125,10 @@ void putEdgedPgm(const char* outFile, int *Color, const PGM_T* pgm)
   for(int height = 0; height < pgm->height; height++)                  // 画素の読み取りを行う
     for(int width = 0; width < pgm->width; width++)
     {
-        fprintf(wfp, "%c", (char)Color[height * pgm->width + width]);
+      fprintf(wfp, "%c", (char)Color[height * pgm->width + width]);
     }
 
-    fclose(wfp);
+  fclose(wfp);
 
 
 }

@@ -5,7 +5,7 @@
 #include "median.h"
 #include "pgm.h"
 
-#define OUTPUTFILE "../resources/plot.txt"
+#define OUTPUTFILE "./resources/plot.txt"
 
 
 
@@ -13,12 +13,10 @@
 int main(int argc, char* argv[])
 {
   PGM_T pgm;
-  char c;
-  int color;
   int filter_flag;
   int *orgColor, *edgedColor;
 
-  const char* outFile = "../resources/edgefile.pgm";
+  const char* outFile = "./resources/edgefile.pgm";
 
   getPgmToken(argv[1], &pgm, edgedColor);   // PGM_T構造体にpgmファイルの要素を格納
   printPgmToken(&pgm);    //デバグ用
