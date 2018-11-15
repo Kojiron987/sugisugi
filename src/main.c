@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
   int filter_flag;
   int *orgColor, *edgedColor;
 
-  const char* outFile = "./resources/edgefile.pgm";
+  const char* outFile = "../result/edgefile.pgm";
 
   getPgmToken(argv[1], &pgm);   // PGM_T構造体にpgmファイルの要素を格納
   printPgmToken(&pgm);    //デバグ用
