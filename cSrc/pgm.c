@@ -70,7 +70,7 @@ void setPgmColor(int* orgColor, PGM_T* pgm)
 
 void skipComment()       //改行まで飛ばす
 {
-  char c;
+  int c;
   while((c = fgetc(pgmFp)) != EOF && c != NEWLINE)
                     ;
   return;
