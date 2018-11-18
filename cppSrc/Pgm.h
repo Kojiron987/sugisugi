@@ -17,7 +17,7 @@ class Pgm
 
 	public:
 		Pgm(const char *inputFile);
-		~Pgm();
+		virtual ~Pgm();
 
 		int getWidth(void);		// Pgmファイルの幅を返す
 		int getHeight(void);	// Pgmファイルの縦の大きさを返す
