@@ -3,7 +3,7 @@
 /* implements Pgm class */
 const int Pgm::COMMENT = '#';
 const int Pgm::NEWLINE = '\n';
-const int Pgm::MAX_IGNORE = 1024;
+const int Pgm::MAX_IGNORE = 1024; // 1024byteまでのコメントを許す
 const int Pgm::MAGIC = 0;
 const int Pgm::WIDTH = 1;
 const int Pgm::HEIGHT = 2;
@@ -89,6 +89,7 @@ int Pgm::setPgmToken(std::ifstream& fin, int state)
 		default:
 			break;
 		}
+		return -1;
 }
 
 
@@ -139,6 +140,22 @@ bool Pgm::setImageMatrix(std::vector<int>& vec)
 	return true;
 }
 
+bool Pgm::setImageMatrix(int *arr)
+{
+	std::ifstream fin(this->inputFile, std::ios::in | std::ios::binary);
+	if(!fin.is_open()) {
+		std::cerr << "Failed to open" << this->inputFile <<  "." << std::endl;
+		return false;
+	}
+
+	fin.seekg(this->colorStartSeeker, fin.beg);
+
+	for(int i = 0; i < this->height; i++)
+		for(int j = 0; j < this->width; j++)
+			arr[i * this->width + j] = fin.get();
+	fin.close();
+	return true;
+}
 
 bool Pgm::writePgm(const std::string& outFile, const std::vector<int> vec)
 {
@@ -160,4 +177,39 @@ bool Pgm::writePgm(const std::string& outFile, const std::vector<int> vec)
 		std::cerr << "Failed to open " << outFile << std::endl;
 		return false;
 	}
+}
+
+
+
+
+bool Pgm::writePgm(const std::string& outFile, const int *arr)
+{
+	std::ofstream fout(outFile, std::ios::out | std::ios::binary);
+	if(fout.is_open()) {
+		fout << this->magic << std::endl;
+		fout << this->width<< std::endl;
+		fout << this->height << std::endl;
+		fout << this->colorSize << std::endl;
+
+		for(int i = 0; i < this->height; i++)
+			for(int j = 0; j < this->width; j++)
+				fout.put((char)arr[i * this->width + j]);
+
+		fout.close();
+		return true;
+	}
+	else {
+		std::cerr << "Failed to open " << outFile << std::endl;
+		return false;
+	}
+}
+
+std::ostream &operator<<(std::ostream &os, const Pgm &pgm)
+{
+	os << "magic number: " << pgm.magic
+		 << " width: " << pgm.width
+		 << " height: " << pgm.height
+		 << " colorSize: " << pgm.colorSize;
+
+	return os;
 }

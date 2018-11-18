@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     return 1;
   }
 
-  pgm.printPgmToken();
+  cout << pgm << endl;
 
   size = pgm.getWidth() * pgm.getHeight();
   vector<int> orgColor(size);
