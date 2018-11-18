@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 int main(int argc, const char* argv[])
 {
   int filter_flag, size;
