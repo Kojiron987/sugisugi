@@ -27,7 +27,11 @@ int main(int argc, char const *argv[]) {
   cout << pgm << endl;
 
   size = pgm.getWidth() * pgm.getHeight();
+
+
   vector<int> orgColor(size);
+
+
 
   pgm.setImageMatrix(orgColor);
 

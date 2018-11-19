@@ -28,10 +28,10 @@ int main(int argc, const char* argv[])
 
   cout << pgm << endl;
 
-  size = sizeof(int) * pgm.getWidth() * pgm.getHeight();
+  size = pgm.getWidth() * pgm.getHeight();
 
-  edgedColor = (int*)malloc(size);
-  orgColor = (int*)malloc(size);
+  edgedColor = new int[size];
+  orgColor = new int[size];
 
 
   pgm.setImageMatrix(orgColor);
@@ -75,8 +75,8 @@ int main(int argc, const char* argv[])
   // フィルタを通した画像データの出力
   pgm.writePgm(outFile, edgedColor);
   // メモリの開放
-  free(orgColor);
-  free(edgedColor);
+  delete [] orgColor;
+  delete [] edgedColor;
 
   return 0;
 
