@@ -17,8 +17,8 @@ int main(int argc, char const *argv[]) {
     return 1;
   }
 
-  Pgm pgm(argv[1]);
-  pgm.init();
+  Pgm pgm;
+  pgm.init(argv[1]);
 
   if(!pgm.is_openSucceed()) {
     cerr << "Failed to read pgm token." << endl;
@@ -37,6 +37,7 @@ int main(int argc, char const *argv[]) {
   pgm.setImageMatrix(orgColor);
 
   pgm.writePgm(outFile, orgColor);
+
 
 
   return 0;

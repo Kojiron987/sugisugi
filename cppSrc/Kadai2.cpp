@@ -19,8 +19,8 @@ int main(int argc, const char* argv[])
     return 1;
   }
 
-  Pgm pgm(argv[1]);
-  pgm.init();
+  Pgm pgm;
+  pgm.init(argv[1]);
 
   if(!pgm.is_openSucceed()) {
     cerr << "Failed to read pgm token." << endl;

@@ -15,10 +15,10 @@
 class Pgm
 {
 
-	public:
-		Pgm(const char *inputFile);
+public:
+		Pgm();
 		virtual ~Pgm();
-		void init(void);  // 初期化
+		void init(const char* inputFile); // 初期化
 
 		int getWidth(void);		// Pgmファイルの幅を返す
 		int getHeight(void);	// Pgmファイルの縦の大きさを返す

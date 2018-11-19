@@ -11,10 +11,15 @@ const int Pgm::COLOR = 3;
 const int Pgm::READEND = 4;
 
 
-Pgm::Pgm(const char* inputFile)
+Pgm::Pgm()
 {
 	this->readSucceedFlag = false;
-	this->inputFile = std::string(inputFile);
+	this->inputFile = "";
+	this->magic = "";
+	this->width = 0;						// 画像の幅
+	this->height = 0;						// 画像の縦の大きさ
+	this->colorSize = 0;						// 輝度を格納
+
 }
 
 
@@ -24,8 +29,11 @@ Pgm::~Pgm()
 
 }
 
-void Pgm::init()
+void Pgm::init(const char* inputFile)
 {
+	this->readSucceedFlag = false;
+	this->inputFile = std::string(inputFile);
+
 	int data; 					// ファイルから一文字ずつ読み取るときに代入する
 	int pgmFlag = Pgm::MAGIC;
 
