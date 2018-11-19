@@ -15,7 +15,6 @@ Pgm::Pgm(const char* inputFile)
 {
 	this->readSucceedFlag = false;
 	this->inputFile = std::string(inputFile);
-	this->init();
 }
 
 
@@ -149,7 +148,7 @@ bool Pgm::setImageMatrix(int *arr)
 	}
 
 	fin.seekg(this->colorStartSeeker, fin.beg);
-	
+
 	for(int i = 0; i < this->height; i++)
 		for(int j = 0; j < this->width; j++)
 			arr[i * this->width + j] = fin.get();

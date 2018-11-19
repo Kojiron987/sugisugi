@@ -18,6 +18,7 @@ class Pgm
 	public:
 		Pgm(const char *inputFile);
 		virtual ~Pgm();
+		void init(void);  // 初期化
 
 		int getWidth(void);		// Pgmファイルの幅を返す
 		int getHeight(void);	// Pgmファイルの縦の大きさを返す
@@ -32,7 +33,6 @@ class Pgm
 																																						// this behavor is same as printPgmToken function.
 private:
 
-	void init(void);  // コンストラクタから呼ぶ
 	int setPgmToken(std::ifstream& fin, int state);  // magic, width, height, colorSizeに値を格納する
 
 	static const int COMMENT;
