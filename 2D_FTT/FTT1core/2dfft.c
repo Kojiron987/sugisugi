@@ -16,7 +16,7 @@
 
 int fft2 (float a_rl[Y_SIZE][X_SIZE], float a_im[Y_SIZE][X_SIZE], int inv);
 
-main()
+int main()
 {
   unsigned char  image[Y_SIZE][X_SIZE];
   float          ar[Y_SIZE][X_SIZE], ai[Y_SIZE][X_SIZE], d;
@@ -28,10 +28,10 @@ main()
 
   fprintf(stderr, "\n pgm file read");
 
-  fp = fopen("../sample/source.pgm", "rb");
-  fgets(buf, 128, fp);  
-  fgets(buf, 128, fp);  
-  fgets(buf, 128, fp);  
+  fp = fopen("../../resouces/source.pgm", "rb");
+  fgets(buf, 128, fp);
+  fgets(buf, 128, fp);
+  fgets(buf, 128, fp);
   for(y = 0; y < Y_SIZE; y++)
     fread(&image[y][0], sizeof(char), X_SIZE, fp);
   fclose(fp);
@@ -57,5 +57,7 @@ main()
 
   fprintf(stderr, "\n Program End");
   fprintf(stderr, "\n\n");
+
+  return 0;
 
 }

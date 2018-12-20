@@ -151,7 +151,7 @@ bool Pgm::setImageMatrix(int *arr)
 {
 	std::ifstream fin(this->inputFile, std::ios::in | std::ios::binary);
 	if(!fin.is_open()) {
-		std::cerr << "Failed to open" << this->inputFile <<  "." << std::endl;
+		std::cerr << "Failed to open " << this->inputFile <<  "." << std::endl;
 		return false;
 	}
 

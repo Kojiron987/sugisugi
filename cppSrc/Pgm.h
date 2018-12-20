@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <ctype.h>
+#include <cctype>
 
 class Pgm
 {
